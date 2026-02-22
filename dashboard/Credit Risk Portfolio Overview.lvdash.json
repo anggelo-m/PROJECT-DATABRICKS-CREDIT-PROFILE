@@ -1,0 +1,699 @@
+{
+  "datasets": [
+    {
+      "name": "0ca96e81",
+      "displayName": "route revenue",
+      "queryLines": [
+        "SELECT\n",
+        "  T.pickup_zip,\n",
+        "  T.dropoff_zip,\n",
+        "  T.route as `Route`,\n",
+        "  T.frequency as `Number Trips`,\n",
+        "  T.total_fare as `Total Revenue`\n",
+        "FROM\n",
+        "  (\n",
+        "    SELECT\n",
+        "      pickup_zip,\n",
+        "      dropoff_zip,\n",
+        "      concat(pickup_zip, '-', dropoff_zip) AS route,\n",
+        "      count(*) as frequency,\n",
+        "      SUM(fare_amount) as total_fare\n",
+        "    FROM\n",
+        "      `samples`.`nyctaxi`.`trips`\n",
+        "    GROUP BY\n",
+        "       1,2,3\n",
+        "  ) T\n",
+        "ORDER BY\n",
+        "  1 ASC"
+      ]
+    },
+    {
+      "name": "3f5450e6",
+      "displayName": "trips",
+      "queryLines": [
+        "SELECT\n",
+        "  T.tpep_pickup_datetime,\n",
+        "  T.tpep_dropoff_datetime,\n",
+        "  T.fare_amount,\n",
+        "  T.pickup_zip,\n",
+        "  T.dropoff_zip,\n",
+        "  T.trip_distance,\n",
+        "  T.weekday,\n",
+        "  CASE\n",
+        "    WHEN T.weekday = 1 THEN 'Sunday'\n",
+        "    WHEN T.weekday = 2 THEN 'Monday'\n",
+        "    WHEN T.weekday = 3 THEN 'Tuesday'\n",
+        "    WHEN T.weekday = 4 THEN 'Wednesday'\n",
+        "    WHEN T.weekday = 5 THEN 'Thursday'\n",
+        "    WHEN T.weekday = 6 THEN 'Friday'\n",
+        "    WHEN T.weekday = 7 THEN 'Saturday'\n",
+        "    ELSE 'N/A'\n",
+        "  END AS day_of_week\n",
+        "FROM\n",
+        "  (\n",
+        "    SELECT\n",
+        "      dayofweek(tpep_pickup_datetime) as weekday,\n",
+        "      *\n",
+        "    FROM\n",
+        "      `samples`.`nyctaxi`.`trips`\n",
+        "    WHERE\n",
+        "      trip_distance > 0\n",
+        "      AND trip_distance < 10\n",
+        "      AND fare_amount > 0\n",
+        "      AND fare_amount < 50\n",
+        "  ) T\n",
+        "ORDER BY\n",
+        "  T.weekday  "
+      ]
+    },
+    {
+      "name": "9f5e2f1c",
+      "displayName": "Table",
+      "queryLines": [
+        "select * from credit_catalog.golden.golden_customer_credit_profile"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "5a35864d",
+      "displayName": "Summary",
+      "layout": [
+        {
+          "widget": {
+            "name": "4e04176c",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"font-size: 24px;\">Credit Risk Portfolio Overview</span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "total-customers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "showDescription": false,
+                "title": "Total Customers"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "countdistinct(customer_id)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "average-income",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "avg(income)",
+                      "expression": "AVG(`income`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Average Income"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(income)",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "style": {
+                    "rules": [
+                      {
+                        "condition": {
+                          "operator": ">="
+                        },
+                        "color": "#00A972"
+                      },
+                      {
+                        "condition": {
+                          "operator": ">="
+                        },
+                        "color": "#00A972"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 1,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "average-age",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "median(age)",
+                      "expression": "MEDIAN(`age`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Average Age"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "median(age)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 1,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "deliquency-radio",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "avg(delinquency_ratio)",
+                      "expression": "AVG(`delinquency_ratio`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Deliquency Ratio"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(delinquency_ratio)",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 1,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "credit-risk-score",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "avg(credit_risk_score)",
+                      "expression": "AVG(`credit_risk_score`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Credit Risk Score"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(credit_risk_score)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 10,
+            "y": 1,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "risk-distribution-age-segment",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "risk_segment",
+                      "expression": "`risk_segment`"
+                    },
+                    {
+                      "name": "age_segment",
+                      "expression": "`age_segment`"
+                    },
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Risk Distribution by Age Segment"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "age_segment",
+                  "axis": {
+                    "title": "Age Segment"
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "countdistinct(customer_id)",
+                  "displayName": "Numbers of Costumers",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "risk_segment",
+                  "displayName": "Risk Segment",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "High Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        }
+                      },
+                      {
+                        "value": "Low Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 3
+                        }
+                      },
+                      {
+                        "value": "Medium Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 2
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "4af738d6",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    },
+                    {
+                      "name": "risk_segment",
+                      "expression": "`risk_segment`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "countdistinct(customer_id)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Numers of Customers"
+                },
+                "color": {
+                  "fieldName": "risk_segment",
+                  "displayName": "Risk Segment",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "High Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        }
+                      },
+                      {
+                        "value": "Low Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 3
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 3,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "afd5e418",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "risk_segment",
+                      "expression": "`risk_segment`"
+                    },
+                    {
+                      "name": "employment_years",
+                      "expression": "`employment_years`"
+                    },
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "employment_years",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    },
+                    "significantFigures": {
+                      "type": "all"
+                    },
+                    "hideGroupSeparator": false
+                  },
+                  "axis": {
+                    "title": "Employment Year"
+                  },
+                  "scale": {
+                    "type": "quantitative",
+                    "domain": {
+                      "max": 50
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "countdistinct(customer_id)",
+                  "displayName": "Number of customers",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "risk_segment",
+                  "displayName": "Risk Segment",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "High Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        }
+                      },
+                      {
+                        "value": "Low Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 3
+                        }
+                      },
+                      {
+                        "value": "Medium Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 2
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 9,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "b815f0d6",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "9f5e2f1c",
+                  "fields": [
+                    {
+                      "name": "risk_segment",
+                      "expression": "`risk_segment`"
+                    },
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    },
+                    {
+                      "name": "income",
+                      "expression": "`income`"
+                    },
+                    {
+                      "name": "avg(credit_risk_score)",
+                      "expression": "AVG(`credit_risk_score`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "scatter",
+              "encodings": {
+                "x": {
+                  "fieldName": "income",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(credit_risk_score)",
+                  "displayName": "Average Credit Risk Score",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "risk_segment",
+                  "displayName": "Risk Segment",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "High Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        }
+                      },
+                      {
+                        "value": "Low Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 3
+                        }
+                      },
+                      {
+                        "value": "Medium Risk",
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 2
+                        }
+                      }
+                    ]
+                  }
+                },
+                "size": {
+                  "fieldName": "countdistinct(customer_id)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "genieSpace": {
+      "isEnabled": true,
+      "enablementMode": "ENABLED"
+    },
+    "applyModeEnabled": false
+  }
+}
