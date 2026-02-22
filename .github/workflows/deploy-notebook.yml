@@ -186,7 +186,7 @@ jobs:
                   "task_key": "ingestion_application_record"
                 }
               ]
-            }
+            },
             {
               "task_key": "transform_credit_record",
               "description": "transform_credit_record",
@@ -202,7 +202,7 @@ jobs:
                   "task_key": "ingestion_credit_record"
                 }
               ]
-            }
+            },
             {
               "task_key": "load",
               "description": "load",
