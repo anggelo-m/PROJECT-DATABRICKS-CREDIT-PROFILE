@@ -15,7 +15,10 @@ Las fuentes de datos provienen de:
 * **Visualización:** Consumo de datos con Power BI y Databricks SQL.
 
 **Servicios Provisionados en Azure:**
-![Arquitectura y Servicios Provisionados Azure](evidencias/Servicios%20provisionados%20Azure.JPG)
+![Servicios Provisionados Azure](evidencias/Servicios%20provisionados%20Azure.JPG)
+
+**Arquitectura del proyecto:**
+![Arquitectura del Proyecto](evidencias/diagrama%20de%20proyecto.png)
 
 ## 🔹 Tecnologías Utilizadas
 
@@ -24,6 +27,7 @@ Las fuentes de datos provienen de:
 * Python (PySpark)
 * Unity Catalog
 * Power BI
+* GitHub (CI/CD)
 
 ## 🔹 Arquitectura Medallion
 
@@ -35,11 +39,14 @@ Las fuentes de datos provienen de:
 
 El pipeline está completamente automatizado y orquestado. A continuación se muestra la evidencia de la configuración y ejecución exitosa del flujo completo, asegurando que los datos viajen desde la ingesta hasta la capa Gold sin errores.
 
+**Tipo de Workflow GitHub:**
+![Configuración del Workflow](evidencias/workflow%20GitHub.JPG)
+
 **Tipo de Workflow Configurado:**
-![Configuración del Workflow](evidencias/type%20of%20workflow.PNG)
+![Configuración del Workflow](evidencias/type%20of%20workflow.JPG)
 
 **Ejecución Exitosa del Workflow:**
-![Resultado del Workflow](evidencias/workflow%20execution.PNG)
+![Resultado del Workflow](evidencias/workflow%20execution.JPG)
 
 ## 🔹 Consumo Analítico
 
