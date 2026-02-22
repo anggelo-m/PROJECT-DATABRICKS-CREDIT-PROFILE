@@ -33,13 +33,13 @@ jobs:
         curl -s -X GET \
           -H "Authorization: Bearer $ORIGIN_TOKEN" \
           "$ORIGIN_HOST/api/2.0/workspace/export?path=$SEC_BASE/Grants&format=SOURCE&direct_download=true" \
-          --output "notebooks_to_deploy/Grants.py"
+          --output "notebooks_to_deploy/Grants.sql"
 
         echo "Exportando DeltaSharing..."
         curl -s -X GET \
           -H "Authorization: Bearer $ORIGIN_TOKEN" \
           "$ORIGIN_HOST/api/2.0/workspace/export?path=$SEC_BASE/DeltaSharing&format=SOURCE&direct_download=true" \
-          --output "notebooks_to_deploy/DeltaSharing.py"
+          --output "notebooks_to_deploy/DeltaSharing.sql"
         for nb in "${NOTEBOOKS[@]}"; do
           echo "Exportando $nb en modo raw..."
           curl -s -X GET \
@@ -53,25 +53,39 @@ jobs:
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
         DEST_BASE="/py/scripts/main"
-        for file in notebooks_to_deploy/*.py; do
-          name=$(basename "$file" .py)
+
+
+        find notebooks_to_deploy -maxdepth 1 -type f \( -name "*.py" -o -name "*.sql" \) | while read file; do
+          
+          file_basename=$(basename "$file")
+          name="${file_basename%.*}" 
+          extension="${file_basename##*.}" 
+          
           dest_path="$DEST_BASE/$name"
+          if [ "$extension" = "sql" ]; then
+            NB_LANG="SQL"
+          else
+            NB_LANG="PYTHON"
+          fi
+
           echo "Creando carpeta $DEST_BASE si no existe..."
           curl -s -X POST \
             -H "Authorization: Bearer $DEST_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"path\":\"$DEST_BASE\"}" \
-            "$DEST_HOST/api/2.0/workspace/mkdirs"
-          echo "Importando $file → $dest_path"
+            "$DEST_HOST/api/2.0/workspace/mkdirs" > /dev/null
+            
+          echo "Importando $file → $dest_path (Lenguaje: $NB_LANG)"
           response=$(curl -s -X POST \
             -H "Authorization: Bearer $DEST_TOKEN" \
             -H "Content-Type: multipart/form-data" \
             -F "path=$dest_path" \
             -F "format=SOURCE" \
-            -F "language=PYTHON" \
+            -F "language=$NB_LANG" \
             -F "overwrite=true" \
             -F "content=@$file" \
             "$DEST_HOST/api/2.0/workspace/import")
+            
           echo "Response: $response"
         done
     
