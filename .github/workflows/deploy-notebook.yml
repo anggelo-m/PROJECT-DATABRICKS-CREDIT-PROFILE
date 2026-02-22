@@ -18,8 +18,28 @@ jobs:
         ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
         ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
         NOTEBOOK_BASE="/Workspace/Users/anggelo.murillo.c@outlook.com/PROJECT-DATABRICKS-CREDIT-PROFILE/proceso"
-        NOTEBOOKS=("01_ingestion_application_record" "02_ingestion_credit_record" "03_transform_application_record" "04_transform_credit_record" "05_load" "preparacion_ambiente" "Grants" "DeltaSharing")  # Agrega más según necesitesas
+        PREP_BASE="/Workspace/Users/anggelo.murillo.c@outlook.com/PROJECT-DATABRICKS-CREDIT-PROFILE/PrepAmb"
+        SEC_BASE="/Workspace/Users/anggelo.murillo.c@outlook.com/PROJECT-DATABRICKS-CREDIT-PROFILE/seguridad"
+        NOTEBOOKS=("01_ingestion_application_record" "02_ingestion_credit_record" "03_transform_application_record" "04_transform_credit_record" "05_load")  # Agrega más según necesitesas
         mkdir -p notebooks_to_deploy
+
+        echo "Exportando preparacion_ambiente..."
+        curl -s -X GET \
+          -H "Authorization: Bearer $ORIGIN_TOKEN" \
+          "$ORIGIN_HOST/api/2.0/workspace/export?path=$PREP_BASE/preparacion_ambiente&format=SOURCE&direct_download=true" \
+          --output "notebooks_to_deploy/preparacion_ambiente.py"
+
+        echo "Exportando Grants..."
+        curl -s -X GET \
+          -H "Authorization: Bearer $ORIGIN_TOKEN" \
+          "$ORIGIN_HOST/api/2.0/workspace/export?path=$SEC_BASE/Grants&format=SOURCE&direct_download=true" \
+          --output "notebooks_to_deploy/Grants.py"
+
+        echo "Exportando DeltaSharing..."
+        curl -s -X GET \
+          -H "Authorization: Bearer $ORIGIN_TOKEN" \
+          "$ORIGIN_HOST/api/2.0/workspace/export?path=$SEC_BASE/DeltaSharing&format=SOURCE&direct_download=true" \
+          --output "notebooks_to_deploy/DeltaSharing.py"
         for nb in "${NOTEBOOKS[@]}"; do
           echo "Exportando $nb en modo raw..."
           curl -s -X GET \
@@ -250,7 +270,7 @@ jobs:
                   "task_key": "transform_credit_record"
                 }
               ]
-            }
+            },
             {
               "task_key": "Grants",
               "description": "Grants",
@@ -266,7 +286,7 @@ jobs:
                   "task_key": "load"
                 }
               ]
-            }
+            },
             {
               "task_key": "DeltaSharing",
               "description": "DeltaSharing",
