@@ -15,7 +15,11 @@ Las fuentes de datos provienen de:
 * **Visualización:** Consumo de datos con Power BI y Databricks SQL.
 
 **Servicios Provisionados en Azure:**
-![Arquitectura y Servicios Provisionados Azure](evidencias/Servicios%20provisionados%20Azure.JPG)
+![Servicios Provisionados Azure](evidencias/Servicios%20provisionados%20Azure.JPG)
+
+**Arquitectura del proyecto:**
+
+![Arquitectura del Proyecto](evidencias/diagrama%20de%20proyecto.png)
 
 ## 🔹 Tecnologías Utilizadas
 
@@ -24,6 +28,7 @@ Las fuentes de datos provienen de:
 * Python (PySpark)
 * Unity Catalog
 * Power BI
+* GitHub (CI/CD)
 
 ## 🔹 Arquitectura Medallion
 
@@ -35,40 +40,60 @@ Las fuentes de datos provienen de:
 
 El pipeline está completamente automatizado y orquestado. A continuación se muestra la evidencia de la configuración y ejecución exitosa del flujo completo, asegurando que los datos viajen desde la ingesta hasta la capa Gold sin errores.
 
+**Tipo de Workflow GitHub:**
+![Configuración del Workflow](evidencias/workflow%20GitHub.JPG)
+
 **Tipo de Workflow Configurado:**
-![Configuración del Workflow](evidencias/type%20of%20workflow.PNG)
+![Configuración del Workflow](evidencias/type%20of%20workflow.JPG)
 
 **Ejecución Exitosa del Workflow:**
-![Resultado del Workflow](evidencias/workflow%20execution.PNG)
+![Resultado del Workflow](evidencias/workflow%20execution.JPG)
 
 ## 🔹 Consumo Analítico
 
 La capa **Gold** es consumida para construir dashboards interactivos enfocados en el análisis de clientes y distribución de riesgo crediticio, aportando valor directo a la toma de decisiones.
 
 **Dashboard en Power BI:**
-![Dashboard de Análisis Crediticio en Power BI](dashboard%20Power%20Bi.JPG)
+![Dashboard de Análisis Crediticio en Power BI](dashboard/dashboard%20Power%20Bi.JPG)
 
 **Dashboard en Databricks:**
-![Dashboard en Databricks](dashboard%20Databricks.JPG)
+![Dashboard en Databricks](dashboard/dashboard%20Databricks.JPG)
 
 ## 🔹 Estructura del Repositorio
 
 ```text
 PROJECT-DATABRICKS-CREDIT-PROFILE/
-├── dashboard Databricks.JPG           # Captura de visualización en Databricks
-├── dashboard Power Bi.JPG             # Captura del dashboard final en Power BI
+├── .github/                          
+│   └──  deply-notebook.yml            # CI/CD Databricks
+├── PrepAmb                          
+│   └──  preparacion_ambiente.ipynb    # Preparacion de Ambiente
+├── certificaciones
+├── dashboard
+│   ├── dashboard Databricks.JPG           # Captura de visualización en Databricks
+│   └── dashboard Power Bi.JPG             # Captura del dashboard final en Power BI
 ├── datasets/                          # Archivos de origen de datos
 │   ├── application_record.csv
 │   └── credit_record.csv
 ├── evidencias/                        # Capturas de ejecución y arquitectura en Azure
 │   ├── Servicios provisionados Azure.JPG
-│   ├── type of workflow.PNG
+│   ├── diagrama de proyecto.png
+│   ├── type of workflow.JPG
+│   ├── workflow GitHub.JPG
 │   └── workflow execution.PNG
-├── prepamb/                           # Preparación de ambiente e infraestructura
 ├── proceso/                           # Notebooks de procesamiento ETL (Medallion)
 │   ├── 01_ingestion_application_record.ipynb
 │   ├── 02_ingestion_credit_record.ipynb
 │   ├── 03_transform_application_record.ipynb
 │   ├── 04_transform_credit_record.ipynb
 │   └── 05_load.ipynb
-└── reversion/                         # Scripts para limpieza y eliminación de objetos
+├── reversion/                         # Scripts para limpieza y eliminación de objetos
+└── seguridad/                         # Scripts para permisos y conexiones con servicios externos
+```
+## 👤 Autor
+
+**Anggelo Murillo** *Data Engineer | Data Scientist | Ingeniero Mecatrónico*
+
+🎓 **Acreditación:** Databricks Lakehouse Fundamentals
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/TU-ENLACE-AQUI](https://www.linkedin.com/in/anggelo-murillo-cordova-627bb217b/))
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/anggelo-m)
