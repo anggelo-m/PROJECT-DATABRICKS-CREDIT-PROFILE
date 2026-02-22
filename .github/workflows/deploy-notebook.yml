@@ -16,7 +16,6 @@ jobs:
     - name: Export multiple notebooks (raw)
       run: |
         ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
-        ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
         NOTEBOOK_BASE="/Workspace/Users/anggelo.murillo.c@outlook.com/PROJECT-DATABRICKS-CREDIT-PROFILE/proceso"
         NOTEBOOKS=("01_ingestion_application_record" "02_ingestion_credit_record" "03_transform_application_record" "04_transform_credit_record" "05_load" "preparacion_ambiente")  # Agrega más según necesitesas
         mkdir -p notebooks_to_deploy
@@ -104,7 +103,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/preparacion_ambiente",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "serverless_cluster",
+              "job_cluster_key": "serverless_cluster",
               "timeout_seconds": 3600,
               "max_retries": 2
             },
@@ -115,7 +114,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/01_ingestion_application_record",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "serverless_cluster",
+              "job_cluster_key": "serverless_cluster",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -131,7 +130,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/02_ingestion_credit_record",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "serverless_cluster",
+              "job_cluster_key": "serverless_cluster",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -148,7 +147,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/03_transform_application_record",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "serverless_cluster",
+              "job_cluster_key": "serverless_cluster",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -164,7 +163,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/04_transform_credit_record",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "serverless_cluster",
+              "job_cluster_key": "serverless_cluster",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -180,7 +179,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/05_load",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "serverless_cluster",
+              "job_cluster_key": "serverless_cluster",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -207,7 +206,7 @@ jobs:
                   "environment": "production",
                   "team": "data-engineering"
                 }
-              }
+            }
             }
           ],
           "schedule": {
