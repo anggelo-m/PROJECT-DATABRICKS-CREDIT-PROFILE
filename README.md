@@ -88,3 +88,12 @@ PROJECT-DATABRICKS-CREDIT-PROFILE/
 │   └── 05_load.ipynb
 ├── reversion/                         # Scripts para limpieza y eliminación de objetos
 └── seguridad/                         # Scripts para permisos y conexiones con servicios externos
+
+## 👤 Autor
+
+**Anggelo Murillo** *Data Engineer | Data Scientist | Ingeniero Mecatrónico*
+
+🎓 **Acreditación:** Databricks Lakehouse Fundamentals
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/TU-ENLACE-AQUI](https://www.linkedin.com/in/anggelo-murillo-cordova-627bb217b/))
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/anggelo-m)
