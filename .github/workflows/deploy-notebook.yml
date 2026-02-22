@@ -206,10 +206,6 @@ jobs:
                 "custom_tags": {
                   "environment": "production",
                   "team": "data-engineering"
-                },
-                "spark_conf": {
-                  "spark.databricks.cluster.profile": "serverless",
-                  "spark.databricks.repl.allowedLanguages": "python,sql"
                 }
               }
             }
