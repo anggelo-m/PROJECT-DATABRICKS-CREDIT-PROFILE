@@ -1,2 +1,74 @@
-# PROJECT-DATABRICKS-CREDIT-PROFILE
-Repository of final project of course Data Engineer and IA with Databricks
+# Azure Databricks Data Engineer – Credit Profile Project
+
+Repositorio que contiene el desarrollo completo de un proyecto analítico en **Azure Databricks** enfocado en la evaluación y análisis de perfiles crediticios para el sector bancario/retail. Se implementa un pipeline ETL utilizando la **Arquitectura Medallion (Bronze / Silver / Gold)** para procesar grandes volúmenes de datos financieros y de clientes.
+
+Las fuentes de datos provienen de:
+* **Datos de Clientes** (`application_record.csv`)
+* **Historial Crediticio / Transacciones** (`credit_record.csv`)
+
+## 🔹 Arquitectura General
+
+* **Ingesta:** Carga de archivos CSV hacia Azure Data Lake / Databricks.
+* **Procesamiento:** Transformación a escala con Azure Databricks (PySpark / Spark SQL).
+* **Gobierno de datos:** Gestión unificada con Unity Catalog.
+* **Orquestación:** Automatización con Jobs de Databricks.
+* **Visualización:** Consumo de datos con Power BI y Databricks SQL.
+
+**Servicios Provisionados en Azure:**
+![Arquitectura y Servicios Provisionados Azure](evidencias/Servicios%20provisionados%20Azure.JPG)
+
+## 🔹 Tecnologías Utilizadas
+
+* Azure Databricks
+* Azure Data Lake Storage Gen2
+* Python (PySpark)
+* Unity Catalog
+* Power BI
+
+## 🔹 Arquitectura Medallion
+
+* **🟤 Bronze:** Ingesta e incorporación de datos crudos (`01_ingestion` y `02_ingestion`).
+* **⚪ Silver:** Limpieza, estandarización y enriquecimiento para generar una vista unificada del cliente (`03_transform` y `04_transform`).
+* **🟡 Gold:** Modelado dimensional y agregados listos para consumo analítico y cálculo de riesgo (`05_load`).
+
+## 🔹 Orquestación y Pipeline
+
+El pipeline está completamente automatizado y orquestado. A continuación se muestra la evidencia de la configuración y ejecución exitosa del flujo completo, asegurando que los datos viajen desde la ingesta hasta la capa Gold sin errores.
+
+**Tipo de Workflow Configurado:**
+![Configuración del Workflow](evidencias/type%20of%20workflow.PNG)
+
+**Ejecución Exitosa del Workflow:**
+![Resultado del Workflow](evidencias/workflow%20execution.PNG)
+
+## 🔹 Consumo Analítico
+
+La capa **Gold** es consumida para construir dashboards interactivos enfocados en el análisis de clientes y distribución de riesgo crediticio, aportando valor directo a la toma de decisiones.
+
+**Dashboard en Power BI:**
+![Dashboard de Análisis Crediticio en Power BI](dashboard%20Power%20Bi.JPG)
+
+**Dashboard en Databricks:**
+![Dashboard en Databricks](dashboard%20Databricks.JPG)
+
+## 🔹 Estructura del Repositorio
+
+```text
+PROJECT-DATABRICKS-CREDIT-PROFILE/
+├── dashboard Databricks.JPG           # Captura de visualización en Databricks
+├── dashboard Power Bi.JPG             # Captura del dashboard final en Power BI
+├── datasets/                          # Archivos de origen de datos
+│   ├── application_record.csv
+│   └── credit_record.csv
+├── evidencias/                        # Capturas de ejecución y arquitectura en Azure
+│   ├── Servicios provisionados Azure.JPG
+│   ├── type of workflow.PNG
+│   └── workflow execution.PNG
+├── prepamb/                           # Preparación de ambiente e infraestructura
+├── proceso/                           # Notebooks de procesamiento ETL (Medallion)
+│   ├── 01_ingestion_application_record.ipynb
+│   ├── 02_ingestion_credit_record.ipynb
+│   ├── 03_transform_application_record.ipynb
+│   ├── 04_transform_credit_record.ipynb
+│   └── 05_load.ipynb
+└── reversion/                         # Scripts para limpieza y eliminación de objetos
