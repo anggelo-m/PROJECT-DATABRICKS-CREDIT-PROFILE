@@ -18,6 +18,7 @@ Las fuentes de datos provienen de:
 ![Servicios Provisionados Azure](evidencias/Servicios%20provisionados%20Azure.JPG)
 
 **Arquitectura del proyecto:**
+
 ![Arquitectura del Proyecto](evidencias/diagrama%20de%20proyecto.png)
 
 ## 🔹 Tecnologías Utilizadas
@@ -68,8 +69,8 @@ PROJECT-DATABRICKS-CREDIT-PROFILE/
 │   └──  preparacion_ambiente.ipynb    # Preparacion de Ambiente
 ├── certificaciones
 ├── dashboard
-    ├── dashboard Databricks.JPG           # Captura de visualización en Databricks
-    └── dashboard Power Bi.JPG             # Captura del dashboard final en Power BI
+│   ├── dashboard Databricks.JPG           # Captura de visualización en Databricks
+│   └── dashboard Power Bi.JPG             # Captura del dashboard final en Power BI
 ├── datasets/                          # Archivos de origen de datos
 │   ├── application_record.csv
 │   └── credit_record.csv
@@ -85,5 +86,5 @@ PROJECT-DATABRICKS-CREDIT-PROFILE/
 │   ├── 03_transform_application_record.ipynb
 │   ├── 04_transform_credit_record.ipynb
 │   └── 05_load.ipynb
-└── reversion/                         # Scripts para limpieza y eliminación de objetos
+├── reversion/                         # Scripts para limpieza y eliminación de objetos
 └── seguridad/                         # Scripts para permisos y conexiones con servicios externos
